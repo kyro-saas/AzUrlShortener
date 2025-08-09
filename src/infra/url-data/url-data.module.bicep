@@ -60,6 +60,18 @@ resource url_data_StorageQueueDataContributor 'Microsoft.Authorization/roleAssig
   scope: url_data
 }
 
+
+
+resource url_data_Contributor 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(url_data.id, principalId, subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c'))
+  properties: {
+    principalId: principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
+    principalType: principalType
+  }
+  scope: url_data
+}
+
 output blobEndpoint string = url_data.properties.primaryEndpoints.blob
 
 output queueEndpoint string = url_data.properties.primaryEndpoints.queue
