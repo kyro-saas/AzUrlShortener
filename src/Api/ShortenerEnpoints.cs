@@ -185,41 +185,9 @@ public static class ShortenerEnpoints
 
     private static string GetHost(HttpContext context)
     {
-        // First priority: Use CustomDomain if provided
         string? customDomain = Environment.GetEnvironmentVariable("CustomDomain");
-        if (!string.IsNullOrEmpty(customDomain))
-        {
-            return customDomain;
-        }
-        
-        // Second priority: Use FunctionAppName with CONTAINER_APP_ENV_DEFAULT_DOMAIN
-        string? functionAppName = Environment.GetEnvironmentVariable("FunctionAppName");
-        string? containerAppDefaultDomain = Environment.GetEnvironmentVariable("CONTAINER_APP_ENV_DEFAULT_DOMAIN");
-        
-        if (!string.IsNullOrEmpty(functionAppName) && !string.IsNullOrEmpty(containerAppDefaultDomain))
-        {
-            // Construct function app URL using the container app environment default domain
-            return $"{functionAppName}.{containerAppDefaultDomain}";
-        }
-        
-        // Third priority: Extract domain from current host
-        if (!string.IsNullOrEmpty(functionAppName))
-        {
-            // Get the current host which has format like: api.azurecontainerapps.io
-            string currentHost = context.Request.Host.Value;
-            
-            // Extract the domain part after the first segment
-            int firstDotIndex = currentHost.IndexOf('.');
-            if (firstDotIndex > 0)
-            {
-                string domainSuffix = currentHost.Substring(firstDotIndex + 1);
-                // Construct function app URL: azfunc-light.azurecontainerapps.io
-                return $"{functionAppName}.{domainSuffix}";
-            }
-        }
-        
-        // Fall back to current host if nothing else works
-        return context.Request.Host.Value;
+        var host = string.IsNullOrEmpty(customDomain) ? context.Request.Host.Value : customDomain;
+        return host ?? string.Empty;
     }
 
 
@@ -264,4 +232,3 @@ public static class ShortenerEnpoints
 	}
 
 }
-
