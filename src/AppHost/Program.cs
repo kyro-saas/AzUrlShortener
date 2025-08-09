@@ -24,10 +24,8 @@ var azFuncLight = builder.AddAzureFunctionsProject<Projects.Cloud5mins_Shortener
 var manAPI = builder.AddProject<Projects.Cloud5mins_ShortenerTools_Api>("api")
 						.WithReference(strTables)
 						.WaitFor(strTables)
-						.WithEnvironment("FunctionAppName", "azfunc-light")
 						.WithEnvironment("CustomDomain",customDomain)
-						.WithEnvironment("DefaultRedirectUrl",defaultRedirectUrl)
-						.WithEnvironment("CONTAINER_APP_ENV_DEFAULT_DOMAIN", builder.Configuration["AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN"]);
+						.WithEnvironment("DefaultRedirectUrl",defaultRedirectUrl);
 						//.WithExternalHttpEndpoints(); // If you want to access the API directly
 
 builder.AddProject<Projects.Cloud5mins_ShortenerTools_TinyBlazorAdmin>("admin")
