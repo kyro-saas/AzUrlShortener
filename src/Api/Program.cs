@@ -1,3 +1,6 @@
+using Cloud5mins.ShortenerTools.Api.Middleware;
+using Cloud5mins.ShortenerTools.Api.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
@@ -7,6 +10,9 @@ builder.AddServiceDefaults();
 builder.Services.AddOpenApi();
 
 builder.AddAzureTableClient("strTables");
+
+// Add API Key validation service
+builder.Services.AddSingleton<IApiKeyValidationService, ApiKeyValidationService>();
 
 builder.Services.AddTransient<ILogger>(sp =>
 {
@@ -26,6 +32,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+// Add API Key authentication middleware
+app.UseMiddleware<ApiKeyAuthenticationMiddleware>();
 
 app.MapShortenerEnpoints();
 

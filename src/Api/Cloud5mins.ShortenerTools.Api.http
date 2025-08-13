@@ -1,9 +1,10 @@
 ## @Api_HostAddress = http://localhost:5288
 @Api_HostAddress = https://localhost:7187
+@API_KEY = your-test-api-keyy
 
 
 ### ####################################
-### Get a Welcome message
+### Get a Welcome message (No API key required)
 Get  {{Api_HostAddress}}/api
 
 
@@ -12,6 +13,7 @@ Get  {{Api_HostAddress}}/api
 POST  {{Api_HostAddress}}/api/UrlCreate
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Vanity": "1111-test",
@@ -24,6 +26,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlCreate
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Vanity": "1111-test",
@@ -37,6 +40,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlCreate
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Vanity": "1111-test",
@@ -49,6 +53,7 @@ Content-Type: application/json
 
 GET  {{Api_HostAddress}}/api/UrlList
 Accept: application/json
+X-API-Key: {{API_KEY}}
 
 
 
@@ -58,6 +63,7 @@ Accept: application/json
 POST  {{Api_HostAddress}}/api/UrlUpdate
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"partitionKey": "1",
@@ -76,6 +82,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlArchive
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"partitionKey": "1",
@@ -94,6 +101,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlClickStatsByDay
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Vanity": "1111-test"
@@ -106,6 +114,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlClickStatsByDay
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {}
 
@@ -118,6 +127,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlCreate
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Url": "https://learn.microsoft.com",
@@ -132,6 +142,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/UrlCreate
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Vanity": "blazor",
@@ -146,6 +157,7 @@ Content-Type: application/json
 POST  {{Api_HostAddress}}/api/GenerateClicks
 Accept: application/json
 Content-Type: application/json
+X-API-Key: {{API_KEY}}
 
 {
 	"Vanity": "blazor"
