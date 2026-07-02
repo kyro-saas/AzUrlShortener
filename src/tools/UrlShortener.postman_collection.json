@@ -25,7 +25,8 @@
 					"path": [
 						"api"
 					]
-				}
+				},
+				"description": "Health check for the API. Returns a plain-text welcome message. No API key required."
 			},
 			"response": []
 		},
@@ -52,7 +53,8 @@
 						"api",
 						"UrlList"
 					]
-				}
+				},
+				"description": "Returns all non-archived short URLs. No filter or pagination — avoid on large datasets. Requires X-API-Key."
 			},
 			"response": []
 		},
@@ -92,7 +94,8 @@
 						"api",
 						"UrlCreate"
 					]
-				}
+				},
+				"description": "Creates a new short URL. Body: Vanity (optional — auto-generated if omitted), Title, Url, Schedules. Returns 201 on success, 409 if vanity already exists."
 			},
 			"response": []
 		},
@@ -132,7 +135,8 @@
 						"api",
 						"UrlUpdate"
 					]
-				}
+				},
+				"description": "Updates an existing short URL's long Url, Title, and Schedules. Requires partitionKey (first char of vanity) and rowKey (vanity). No need to call URL List if you know the vanity."
 			},
 			"response": []
 		},
@@ -172,7 +176,8 @@
 						"api",
 						"UrlArchive"
 					]
-				}
+				},
+				"description": "Soft-deletes a short URL by setting IsArchived=true. Archived links redirect to the default fallback URL. Body needs only partitionKey and rowKey."
 			},
 			"response": []
 		},
@@ -212,7 +217,8 @@
 						"api",
 						"UrlClickStatsByDay"
 					]
-				}
+				},
+				"description": "Returns daily click counts for one vanity within a date range. StartDate and EndDate are required (format: yyyy-MM-dd)."
 			},
 			"response": []
 		},
@@ -252,7 +258,8 @@
 						"api",
 						"UrlClickStatsByDay"
 					]
-				}
+				},
+				"description": "Returns daily click counts across all vanities. Same endpoint as Click Stats By Day — leave Vanity empty and set a wide date range."
 			},
 			"response": []
 		},
@@ -292,7 +299,8 @@
 						"api",
 						"UrlDataImport"
 					]
-				}
+				},
+				"description": "Bulk-imports short URLs from CSV-exported data. Body: nextId counter entity plus lstShortUrlEntity array. Used for data migration."
 			},
 			"response": []
 		},
@@ -332,7 +340,8 @@
 						"api",
 						"UrlClickStatsImport"
 					]
-				}
+				},
+				"description": "Bulk-imports click-stat rows from CSV-exported data. Body is an array of ClickStatsEntity objects. Used for data migration."
 			},
 			"response": []
 		},
@@ -349,7 +358,8 @@
 					"path": [
 						"goo2"
 					]
-				}
+				},
+				"description": "Tests the public redirect for a vanity slug. Served by FunctionsLight (not the API). Returns 302 to the long URL and records a click. No API key required."
 			},
 			"response": []
 		}
