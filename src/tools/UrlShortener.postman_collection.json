@@ -2,15 +2,47 @@
 	"info": {
 		"_postman_id": "b7f7653d-7a2c-463f-823c-8d8cc36000fc",
 		"name": "UrlShortener",
+		"description": "Cloud5mins URL Shortener API. Set API_KEY in environment. Management endpoints use BaseUrl (API). Redirect uses RedirectBaseUrl (FunctionsLight).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5423981"
 	},
 	"item": [
 		{
+			"name": "Welcome",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{BaseUrl}}/api",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "URL List",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"url": {
 					"raw": "{{BaseUrl}}/api/UrlList",
 					"host": [
@@ -25,35 +57,111 @@
 			"response": []
 		},
 		{
-			"name": "Click Stats",
+			"name": "URL Create",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"vanity\": \"b\"\r\n}"
+					"raw": "{\n    \"Vanity\": \"goo2\",\n    \"Title\": \"Google\",\n    \"Url\": \"https://www.google.com\",\n    \"Schedules\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "{{BaseUrl}}/api/UrlClickStatsByDay",
+					"raw": "{{BaseUrl}}/api/UrlCreate",
 					"host": [
 						"{{BaseUrl}}"
 					],
 					"path": [
 						"api",
-						"UrlClickStatsByDay"
+						"UrlCreate"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "Archive",
+			"name": "URL Update",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"PartitionKey\": \"g\",\r\n        \"RowKey\": \"goo2\"\r\n    }"
+					"raw": "{\n    \"partitionKey\": \"g\",\n    \"rowKey\": \"goo2\",\n    \"Url\": \"https://www.google.com\",\n    \"Title\": \"Google\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlUpdate",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlUpdate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL Archive",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"partitionKey\": \"g\",\n    \"rowKey\": \"goo2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "{{BaseUrl}}/api/UrlArchive",
@@ -69,22 +177,160 @@
 			"response": []
 		},
 		{
-			"name": "Create / Update Url",
+			"name": "Click Stats By Day",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Vanity\": \"goo2\",\r\n    \"Title\": \"Google\",\r\n    \"Url\": \"https://www.google.com\",\r\n    \"Schedules\": []\r\n}"
+					"raw": "{\n    \"Vanity\": \"goo2\",\n    \"StartDate\": \"2025-01-01\",\n    \"EndDate\": \"2025-12-31\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "{{BaseUrl}}/api/UrlUpsert",
+					"raw": "{{BaseUrl}}/api/UrlClickStatsByDay",
 					"host": [
 						"{{BaseUrl}}"
 					],
 					"path": [
 						"api",
-						"UrlUpsert"
+						"UrlClickStatsByDay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Click Stats All",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Vanity\": \"\",\n    \"StartDate\": \"2020-01-01\",\n    \"EndDate\": \"2099-12-31\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlClickStatsByDay",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlClickStatsByDay"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "URL Data Import",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nextId\": {\n        \"id\": 1,\n        \"partitionKey\": \"NextId\",\n        \"rowKey\": \"1\"\n    },\n    \"lstShortUrlEntity\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlDataImport",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlDataImport"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Click Stats Import",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"datetime\": \"2025-01-15 10:30\",\n        \"partitionKey\": \"goo2\",\n        \"rowKey\": \"00000000-0000-0000-0000-000000000001\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlClickStatsImport",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlClickStatsImport"
 					]
 				}
 			},
@@ -92,23 +338,16 @@
 		},
 		{
 			"name": "Redirect",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Vanity\": \"b\"\r\n}"
-				},
 				"url": {
-					"raw": "{{BaseUrl}}/b",
+					"raw": "{{RedirectBaseUrl}}/goo2",
 					"host": [
-						"{{BaseUrl}}"
+						"{{RedirectBaseUrl}}"
 					],
 					"path": [
-						"b"
+						"goo2"
 					]
 				}
 			},
