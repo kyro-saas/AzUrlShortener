@@ -2,15 +2,48 @@
 	"info": {
 		"_postman_id": "b7f7653d-7a2c-463f-823c-8d8cc36000fc",
 		"name": "UrlShortener",
+		"description": "Cloud5mins URL Shortener API. Set API_KEY in environment. Management endpoints use BaseUrl (API). Redirect uses RedirectBaseUrl (FunctionsLight).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "5423981"
 	},
 	"item": [
 		{
+			"name": "Welcome",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					}
+				],
+				"url": {
+					"raw": "{{BaseUrl}}/api",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api"
+					]
+				},
+				"description": "Health check for the API. Returns a plain-text welcome message. No API key required."
+			},
+			"response": []
+		},
+		{
 			"name": "URL List",
 			"request": {
 				"method": "GET",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"url": {
 					"raw": "{{BaseUrl}}/api/UrlList",
 					"host": [
@@ -20,40 +53,119 @@
 						"api",
 						"UrlList"
 					]
-				}
+				},
+				"description": "Returns all non-archived short URLs. No filter or pagination — avoid on large datasets. Requires X-API-Key."
 			},
 			"response": []
 		},
 		{
-			"name": "Click Stats",
+			"name": "URL Create",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"vanity\": \"b\"\r\n}"
+					"raw": "{\n    \"Vanity\": \"goo2\",\n    \"Title\": \"Google\",\n    \"Url\": \"https://www.google.com\",\n    \"Schedules\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "{{BaseUrl}}/api/UrlClickStatsByDay",
+					"raw": "{{BaseUrl}}/api/UrlCreate",
 					"host": [
 						"{{BaseUrl}}"
 					],
 					"path": [
 						"api",
-						"UrlClickStatsByDay"
+						"UrlCreate"
 					]
-				}
+				},
+				"description": "Creates a new short URL. Body: Vanity (optional — auto-generated if omitted), Title, Url, Schedules. Returns 201 on success, 409 if vanity already exists."
 			},
 			"response": []
 		},
 		{
-			"name": "Archive",
+			"name": "URL Update",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n        \"PartitionKey\": \"g\",\r\n        \"RowKey\": \"goo2\"\r\n    }"
+					"raw": "{\n    \"partitionKey\": \"g\",\n    \"rowKey\": \"goo2\",\n    \"Url\": \"https://www.google.com\",\n    \"Title\": \"Google\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlUpdate",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlUpdate"
+					]
+				},
+				"description": "Updates an existing short URL's long Url, Title, and Schedules. Requires partitionKey (first char of vanity) and rowKey (vanity). No need to call URL List if you know the vanity."
+			},
+			"response": []
+		},
+		{
+			"name": "URL Archive",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"partitionKey\": \"g\",\n    \"rowKey\": \"goo2\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
 					"raw": "{{BaseUrl}}/api/UrlArchive",
@@ -64,53 +176,190 @@
 						"api",
 						"UrlArchive"
 					]
-				}
+				},
+				"description": "Soft-deletes a short URL by setting IsArchived=true. Archived links redirect to the default fallback URL. Body needs only partitionKey and rowKey."
 			},
 			"response": []
 		},
 		{
-			"name": "Create / Update Url",
+			"name": "Click Stats By Day",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"Vanity\": \"goo2\",\r\n    \"Title\": \"Google\",\r\n    \"Url\": \"https://www.google.com\",\r\n    \"Schedules\": []\r\n}"
+					"raw": "{\n    \"Vanity\": \"goo2\",\n    \"StartDate\": \"2025-01-01\",\n    \"EndDate\": \"2025-12-31\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
 				},
 				"url": {
-					"raw": "{{BaseUrl}}/api/UrlUpsert",
+					"raw": "{{BaseUrl}}/api/UrlClickStatsByDay",
 					"host": [
 						"{{BaseUrl}}"
 					],
 					"path": [
 						"api",
-						"UrlUpsert"
+						"UrlClickStatsByDay"
 					]
-				}
+				},
+				"description": "Returns daily click counts for one vanity within a date range. StartDate and EndDate are required (format: yyyy-MM-dd)."
+			},
+			"response": []
+		},
+		{
+			"name": "Click Stats All",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Vanity\": \"\",\n    \"StartDate\": \"2020-01-01\",\n    \"EndDate\": \"2099-12-31\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlClickStatsByDay",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlClickStatsByDay"
+					]
+				},
+				"description": "Returns daily click counts across all vanities. Same endpoint as Click Stats By Day — leave Vanity empty and set a wide date range."
+			},
+			"response": []
+		},
+		{
+			"name": "URL Data Import",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"nextId\": {\n        \"id\": 1,\n        \"partitionKey\": \"NextId\",\n        \"rowKey\": \"1\"\n    },\n    \"lstShortUrlEntity\": []\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlDataImport",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlDataImport"
+					]
+				},
+				"description": "Bulk-imports short URLs from CSV-exported data. Body: nextId counter entity plus lstShortUrlEntity array. Used for data migration."
+			},
+			"response": []
+		},
+		{
+			"name": "Click Stats Import",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "X-API-Key",
+						"value": "{{API_KEY}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "[\n    {\n        \"datetime\": \"2025-01-15 10:30\",\n        \"partitionKey\": \"goo2\",\n        \"rowKey\": \"00000000-0000-0000-0000-000000000001\"\n    }\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseUrl}}/api/UrlClickStatsImport",
+					"host": [
+						"{{BaseUrl}}"
+					],
+					"path": [
+						"api",
+						"UrlClickStatsImport"
+					]
+				},
+				"description": "Bulk-imports click-stat rows from CSV-exported data. Body is an array of ClickStatsEntity objects. Used for data migration."
 			},
 			"response": []
 		},
 		{
 			"name": "Redirect",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"Vanity\": \"b\"\r\n}"
-				},
 				"url": {
-					"raw": "{{BaseUrl}}/b",
+					"raw": "{{RedirectBaseUrl}}/goo2",
 					"host": [
-						"{{BaseUrl}}"
+						"{{RedirectBaseUrl}}"
 					],
 					"path": [
-						"b"
+						"goo2"
 					]
-				}
+				},
+				"description": "Tests the public redirect for a vanity slug. Served by FunctionsLight (not the API). Returns 302 to the long URL and records a click. No API key required."
 			},
 			"response": []
 		}
